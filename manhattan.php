@@ -462,7 +462,7 @@ if ($flagg == 0 && ($_SERVER["REQUEST_METHOD"] == "POST" || (isset($_COOKIE['k']
 			echo "<br>\nvalue= "; var_dump($value);
 		}
 		
-		setcookie("k", $value, time() + 2592000);				// Setzen eines Cookies "k"
+		setcookie("k", $value, time() + 60*60*24*30*6);				// Setzen eines Cookies "k"
 	}
 	$br = "\n<tr><td>&nbsp;</td><td colspan=\"4\"></td></tr>\n";
 	echo "<table>\n";

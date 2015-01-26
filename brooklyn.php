@@ -27,17 +27,20 @@ if (strpos($_SESSION['uinfo'], "?m") !== False) {					// Einstellungen fuer die 
 	$font_size = "3em";
 	$input_font_size = "0.8em";
 	$footer_font_size = "0.55em";
-	$footnote_font_size = "0.75em";
+	$footnote_font_size = "0.55em";
+	$note_font_size = "0.7em";
 } else if (strpos($_SESSION['uinfo'], "?desktop") !== False || strpos($_SESSION['uinfo'], "?Linux") !== False) {	// Desktop Version
 	$font_size = "1em";
 	$input_font_size = "0.8em";
 	$footer_font_size = "0.9em";
 	$footnote_font_size = "0.75em";
+	$note_font_size = "1em";
 } else if (strpos($_SESSION['uinfo'], "?iframe") !== False) {				// iFrame-Version
 	$font_size = "1em";
 	$input_font_size = "0.8em";
 	$footer_font_size = "0.9em";
 	$footnote_font_size = "0.75em";
+	$note_font_size = "1em";
 }
 
 
@@ -96,8 +99,11 @@ function visibility() {
 	body {
 		font-size: ' . $font_size . ';
 	}
-	input {
+	input{
 		font-size: ' . $input_font_size . ';
+	}
+	input[type="text"] {
+		width: 10em;
 	}
 	input[type="checkbox"] {
 		width: 1.2em;
@@ -109,6 +115,9 @@ function visibility() {
 	.center{										// Alternative zu <div align="center">
 		margin: auto;
 		width: 50%;
+	}
+	.note {
+		font-size:'  . $note_font_size . ';
 	}
 	span.tab{
 	    padding: 1
@@ -281,7 +290,8 @@ if ($flagg == 0 && ($_SERVER["REQUEST_METHOD"] == "POST" || (isset($_COOKIE['l']
 	echo "<h3>Vetretungsplan</h3>";	
 	echo "<form method=\"post\" action=\"" . htmlspecialchars($_SERVER["REQUEST_URI"]) . "\">\n";	
 	echo "Ihr Nachname: <input type=\"text\" name=\"lehrer\" value=\"" . $value . "\">\n";	
-	echo "<span class=\"tab\"></span><input type=\"submit\" name=\"submit\" value=\"senden\">\n</form><br>\n";
+	echo "&nbsp;&nbsp;<span class=\"tab\"></span><input type=\"submit\" name=\"submit\" value=\"senden\">\n</form><br>\n";
+	echo "<span class=\"note\">Der eingetragene Name muss dem<br>auf dem Vertretungsplan entsprechen:<br>z.B: Schultze E.</span><br><br>";
 	echo "<br>\n<br>\n<div class=\"footnote\">\n$footnote</div>\n<br>";	
 }
 ?>

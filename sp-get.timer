@@ -1,0 +1,9 @@
+[Unit]
+Description=HMS custom substitution-plan - cron-sp-get
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=2min
+
+[Install]
+WantedBy=multi-user.target

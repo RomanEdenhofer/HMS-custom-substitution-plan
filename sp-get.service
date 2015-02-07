@@ -1,0 +1,7 @@
+[Unit]
+Description=HMS custom substitution-plan - cron-sp-get
+
+[Service]
+User=edh
+Group=edh
+ExecStart=/home/edh/Projects/HMS-custom-substitution-plan/cron-sp-get

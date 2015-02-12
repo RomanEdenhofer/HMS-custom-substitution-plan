@@ -1,7 +1,7 @@
 <?php
 /*
 Verarbeitung des Vertretungsplans in php
-Gordian Edenhofer 09-Jun-2014	
+Gordian Edenhofer 09-Jun-2014
 */
 session_start();
 
@@ -65,7 +65,7 @@ function newlineif() {
 		print $br;
 		$l += 1;
 	}
-	
+
 	$p = 0;
 }
 
@@ -81,8 +81,8 @@ function visibility() {
 			'; /* Still incomplete
 			var sel = document.getElementById("ft");
 			var val = sel.options[sel.selectedIndex].value;
-			*/ echo '	
-	document.getElementById("fehlende_lehrer_1").style.display = "none";	
+			*/ echo '
+	document.getElementById("fehlende_lehrer_1").style.display = "none";
 	document.getElementById("fehlende_klassen_1").style.display = "none";
 	document.getElementById("fehlende_raeume_1").style.display = "none";
 	document.getElementById("fehlende_lehrer_2").style.display = "none";
@@ -191,7 +191,7 @@ if ($flagg == 0 && ($_SERVER["REQUEST_METHOD"] == "POST" || (isset($_COOKIE['l']
 		setcookie("l", $value, time() + 2592000);				// Setzen eines Cookies "k"
 	}
 	echo "<table>\n";
-	
+
 	$handle = fopen("$source_url", "r");						// Oeffnen des Vertretungsplans
 	if ($handle) {
     		while (($buffer = fgets($handle, 4096)) !== false) {
@@ -204,7 +204,7 @@ if ($flagg == 0 && ($_SERVER["REQUEST_METHOD"] == "POST" || (isset($_COOKIE['l']
 					echo "_1\">\n";
 				} else if ($n == 1) {
 					echo "_2\">\n";
-				}				
+				}
 				echo "$buffer_o$buffer_p";
 				$ybe++;
 				$p = 1;
@@ -213,7 +213,7 @@ if ($flagg == 0 && ($_SERVER["REQUEST_METHOD"] == "POST" || (isset($_COOKIE['l']
 				echo "</TR>";
 				newlineif();
 			}
-			
+
 			if (preg_match("/>(Vertretungsplan|Ersatzraumplan)/", $buffer) == 1) {
 				newlineif();
 				echo $buffer . $br;
@@ -222,15 +222,15 @@ if ($flagg == 0 && ($_SERVER["REQUEST_METHOD"] == "POST" || (isset($_COOKIE['l']
 				$p = 1;
 			} else if (preg_match("/Titel.>.+/", $buffer) == 1 && $p == 1) {
 				newlineif();
-			}	
-			
+			}
+
 			if ( $p == 1 ) {
 				echo $buffer;						// Ausdrucken der selektierten Zeile
 				$l++;
 			}
 			$buffer_o = $buffer_p;
 			$buffer_p = $buffer;
-			
+
 			if (preg_match("/fehlende Lehrer:/", $buffer) == 1) {
 				echo "</table>\n\n<table id=\"fehlende_lehrer";
 				if ($n == 0) {
@@ -257,7 +257,7 @@ if ($flagg == 0 && ($_SERVER["REQUEST_METHOD"] == "POST" || (isset($_COOKIE['l']
 					echo "_1\">\n";
 				} else if ($n == 1) {
 					echo "_2\">\n";
-				}				
+				}
 				echo "<TR><TH COLSPAN=2><DIV CLASS=\"Titel\">Fehlende R&auml;ume:</DIV></TH></TR>";
 				$p = 1;
 				$i = 4;
@@ -266,33 +266,33 @@ if ($flagg == 0 && ($_SERVER["REQUEST_METHOD"] == "POST" || (isset($_COOKIE['l']
 		}
 	}
 	fclose($handle);								// Schließen des Vertretungsplans
-	
+
 	while ($l++ <= 12) {
 		echo $br;
 	}
-	
+
 	echo "</table>\n<div class=\"footer\">Aktualisiert am: " . date('j') . "." . date('m') . "." . date('y')
-	. " " . date('H') . ":" . date('i') . "</div>";		
+	. " " . date('H') . ":" . date('i') . "</div>";
 	echo "<div class=\"footer\">" . $value . "<br>\nKEINE GEW&Auml;HR\n</div>\n";
 	echo "<form method=\"post\" action=\"" . htmlspecialchars($_SERVER["REQUEST_URI"]) . "\">";
 	echo "<input type=\"submit\" name=\"submit\" value=\"$dc\">";
 	echo " <input type=\"button\" onClick=\"history.go(0)\" value=\"$rt\">\n</form>\n";
 	echo "<br>\n<div class=\"footnote\">$footnote</div>\n<br>";
-	
-	while ($ybe++ < 2) echo "\n<table id=\"yellow_block_" . $ybe . "\"></table>";		
+
+	while ($ybe++ < 2) echo "\n<table id=\"yellow_block_" . $ybe . "\"></table>";
 } else {
 	if (isset($_COOKIE['l'])) {
 		if ($debug) echo "\$_COOKIE: " . $_COOKIE['l'] . "\n";
 		$value = htmlspecialchars_decode($_COOKIE['l']);
 		if ($debug) echo "value=|$value|\n";
 	} else $value = "";
-	
-	echo "<h3>Vetretungsplan</h3>";	
-	echo "<form method=\"post\" action=\"" . htmlspecialchars($_SERVER["REQUEST_URI"]) . "\">\n";	
-	echo "Ihr Nachname: <input type=\"text\" name=\"lehrer\" value=\"" . $value . "\">\n";	
+
+	echo "<h3>Vetretungsplan</h3>";
+	echo "<form method=\"post\" action=\"" . htmlspecialchars($_SERVER["REQUEST_URI"]) . "\">\n";
+	echo "Ihr Nachname: <input type=\"text\" name=\"lehrer\" value=\"" . $value . "\">\n";
 	echo "&nbsp;&nbsp;<span class=\"tab\"></span><input type=\"submit\" name=\"submit\" value=\"senden\">\n</form><br>\n";
 	echo "<span class=\"note\">Der eingetragene Name muss dem<br>auf dem Vertretungsplan entsprechen:<br>z.B: Schultze E.</span><br><br>";
-	echo "<br>\n<br>\n<div class=\"footnote\">\n$footnote</div>\n<br>";	
+	echo "<br>\n<br>\n<div class=\"footnote\">\n$footnote</div>\n<br>";
 }
 ?>
 

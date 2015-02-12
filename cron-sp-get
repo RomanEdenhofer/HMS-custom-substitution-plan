@@ -2,9 +2,10 @@
 # Vertretungsplan als Startseite des Apache2-Servers auf dem Rasberry Pi
 # Gordian Edenhofer 08-04-14
 
-project_root="HMS-custom-substitution-plan"
+project_root="/home/$USER/Projects/HMS-custom-substitution-plan"
+destination="/tmp"
 
-cd /tmp
+cd $destination
 
 # Fetching the html pages
 wget -q www.heinrich-mann-schule.de/vertretung/S_heute.html
@@ -15,11 +16,11 @@ wget -q www.heinrich-mann-schule.de/vertretung/L_morgen.html
 # Preparing the substitution plan for students
 cat S_heute.html S_morgen.html > v.html
 tr \\r \\n < v.html > vtemp
-/home/$USER/Projects/$project_root/sp-converter vtemp > v.html
+$project_root/sp-converter vtemp > v.html
 rm -f vtemp S_heute.html S_morgen.html
 
 # Preparing the substitution plan for teachers
 cat L_heute.html L_morgen.html > v-l.html
 tr \\r \\n < v-l.html > vltemp
-/home/$USER/Projects/$project_root/sp-converter vltemp > v-l.html
+$project_root/sp-converter vltemp > v-l.html
 rm -f vltemp L_heute.html L_morgen.html

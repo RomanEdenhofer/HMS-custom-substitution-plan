@@ -1,7 +1,7 @@
 <?php
 /*
 Verarbeitung des Vertretungsplans in php
-Gordian Edenhofer 09-Jun-2014	
+Gordian Edenhofer 09-Jun-2014
 */
 
 /* Default-Werte, die im weiteren Verlauf geaender werden koennen */
@@ -27,7 +27,7 @@ if (strpos($_SERVER["QUERY_STRING"], "iframe") === false) {
 		else if (strpos($_SERVER['HTTP_USER_AGENT'], "Linux") !== False && strpos($_SERVER['HTTP_USER_AGENT'], "Android") === False) $_SESSION['uinfo'] = '?Linux';
 		else $_SESSION['uinfo'] = '?m';
 	}
-	
+
 	if (strpos($_SESSION['uinfo'], "?m") !== False) {
 		// mobile version
 		$column = 2;
@@ -133,7 +133,7 @@ $kurse_q = array(
 	'T_14\/4' => "Sport bei Frau F. [T04]",
 	'T_14\/9' => "Sport bei Herrn S.",
 	'T_14\/6' => "Sport bei Herrn P." );
-	
+
 // Kurse der 13. Klasse (Abschlussklasse)
 $kurse_a = array(
 	'B_13\/5' => "Bio bei Frau S.",
@@ -210,7 +210,7 @@ $z = array(
 	"G" => "Gymnasium",
 	" R" => "Realschule",
 	"  H" => "Hauptschule" );
-	
+
 // Jahrgangsstufe
 $jg = array(
 	"05" => "5. Klasse",
@@ -221,7 +221,7 @@ $jg = array(
 	"EP " => "E-Phase",
 	"12" => "Q1 und Q2",
 	"13" => "Q3 und Q4" );
-	
+
 // Parallel Klassen
 $p = array(
 	"-" => "bitte w&auml;hlen",
@@ -231,7 +231,7 @@ $p = array(
 	"d" => "d",
 	"e" => "e",
 	"f" => "f" );
-	
+
 // Parallel Klassen der E-Phase
 $ep = array(
 	"-" => "bitte w&auml;hlen",
@@ -262,7 +262,7 @@ function kurse_visibility() {
 	var sel = document.getElementById("jg");
 	var val = sel.options[sel.selectedIndex].value;
 	var code = val.charCodeAt(0);
-	
+
 	if (val == 12) {
 		document.getElementById("12_table").style.display = "inline-table";
 		document.getElementById("13_table").style.display = "none";
@@ -413,7 +413,7 @@ if ($flagg == 0 && ($_SERVER["REQUEST_METHOD"] == "POST" || (isset($_COOKIE['k']
 		$p = (isset($_POST['p'])) ? $_POST['p'] : "";
 		$z = (isset($_POST['z'])) ? $_POST['z'] : "";
 		$ep = "";
-		
+
 		$s = "(";
 		if (strcmp($jg, "12") == 0) {
 			$key = key($kurse_q);
@@ -437,7 +437,7 @@ if ($flagg == 0 && ($_SERVER["REQUEST_METHOD"] == "POST" || (isset($_COOKIE['k']
 			}
 		}
 		$s .= ")";
-		
+
 		if ($debug) {
 			echo "\njg= ";
 			var_dump($jg);
@@ -448,7 +448,7 @@ if ($flagg == 0 && ($_SERVER["REQUEST_METHOD"] == "POST" || (isset($_COOKIE['k']
 			echo "<br>\np= "; var_dump($p);
 			echo "<br>\ns= "; var_dump($s);
 		}
-		
+
 		if (strcmp($jg, "12") == 0 || strcmp($jg, "13") == 0) {
 			$value = $jg . $s;
 		} else if (strncmp($jg, "EP ", 3) == 0) {
@@ -457,18 +457,18 @@ if ($flagg == 0 && ($_SERVER["REQUEST_METHOD"] == "POST" || (isset($_COOKIE['k']
 		} else {
 			$value = $jg . $p .  $z;
 		}
-		
+
 		if ($debug) {
 			echo "<br>\nvalue= "; var_dump($value);
 		}
-		
+
 		setcookie("k", $value, time() + 60*60*24*30*6);				// Setzen eines Cookies "k"
 	}
 	$br = "\n<tr><td>&nbsp;</td><td colspan=\"4\"></td></tr>\n";
 	echo "<table>\n";
-	
+
 	// Modifying the $value variable to fit the new style of the subsitution plan
-	$temp = substr($value, 0, 2);	
+	$temp = substr($value, 0, 2);
 	if (strcmp($temp, "12") == 0 || strcmp($temp, "13") == 0) {
 		$value_old = $value;
 		// removing the "12" || "13" in front of $value
@@ -479,7 +479,7 @@ if ($flagg == 0 && ($_SERVER["REQUEST_METHOD"] == "POST" || (isset($_COOKIE['k']
 		$value_old = $value;
 	}
 	$temp = "";
-	
+
 	// opening the substitution-plan file
 	$handle = fopen("$source_url", "r");
 	if ($handle) {
@@ -505,10 +505,10 @@ if ($flagg == 0 && ($_SERVER["REQUEST_METHOD"] == "POST" || (isset($_COOKIE['k']
 	}
 	// closing the susbtitution-plan file
 	fclose($handle);
-	
+
 	// Resetting $value for the purpose of showing it of
 	$value =  $value_old;
-	
+
 	// debug settings
 	if ($debug) {
 		$value = str_replace("| ", "|", $value);
@@ -520,7 +520,7 @@ if ($flagg == 0 && ($_SERVER["REQUEST_METHOD"] == "POST" || (isset($_COOKIE['k']
 				$value = substr($value, 0, $temp);
 		}
 	}
-	
+
 	// printing the footer
 	while ($l++ <= 12) {
 		echo $br;
@@ -531,7 +531,7 @@ if ($flagg == 0 && ($_SERVER["REQUEST_METHOD"] == "POST" || (isset($_COOKIE['k']
 	echo "<form method=\"post\" action=\"" . htmlspecialchars($_SERVER["REQUEST_URI"]) . "\">";
 	echo "<input type=\"submit\" name=\"submit\" value=\"$dc\">";
 	echo " <input type=\"button\" onClick=\"history.go(0)\" value=\"$rt\">\n</form>\n";
-	echo "<br>\n<div class=\"footnote\">$footnote</div>\n<br>";		
+	echo "<br>\n<div class=\"footnote\">$footnote</div>\n<br>";
 } else {
 	if (isset($_COOKIE['k'])) {
 		if ($debug) echo "\$_COOKIE: " . $_COOKIE['k'] . "\n";
@@ -553,10 +553,10 @@ if ($flagg == 0 && ($_SERVER["REQUEST_METHOD"] == "POST" || (isset($_COOKIE['k']
 		$value = "";
 		$value_temp = 0;
 	}
-	
-	echo "<h3>Vetretungsplan</h3>";	
+
+	echo "<h3>Vetretungsplan</h3>";
 	echo "<form method=\"post\" action=\"" . htmlspecialchars($_SERVER["REQUEST_URI"]) . "\">\n";
-	
+
 	echo "Klasse bzw. Jahrgangsstufe: <select id=jg name=jg onchange=\"kurse_visibility()\""
 	 . "onblur= \"kurse_visibility()\" onselect=\"kurse_visibility()\">";
 	while ($val = current($jg)) {
@@ -569,7 +569,7 @@ if ($flagg == 0 && ($_SERVER["REQUEST_METHOD"] == "POST" || (isset($_COOKIE['k']
 		next($jg);
 	}
 	echo "</select>\n\n";
-	
+
 	if ($column > 2) {
 		echo "<p id=\"p_space\"><span class=\"tab\"></span></p>";
 	} else {
@@ -597,7 +597,7 @@ if ($flagg == 0 && ($_SERVER["REQUEST_METHOD"] == "POST" || (isset($_COOKIE['k']
 		next($ep);
 	}
 	echo "</select>\n\n";
-	
+
 	if ($column > 2) {
 		echo "<p id=\"z_space\"><span class=\"tab\"></span></p>";
 	} else {
@@ -614,7 +614,7 @@ if ($flagg == 0 && ($_SERVER["REQUEST_METHOD"] == "POST" || (isset($_COOKIE['k']
 		next($z);
 	}
 	echo "</select>\n\n";
-	
+
 	if ($column > 1) {
 		echo "<span class=\"tab\"></span><input type=\"submit\" name=\"submit\" value=\"senden\"><br>\n";
 	} else {
@@ -623,9 +623,9 @@ if ($flagg == 0 && ($_SERVER["REQUEST_METHOD"] == "POST" || (isset($_COOKIE['k']
 	if (strpos($_SERVER["QUERY_STRING"], "iframe") === false) {
 		if (strpos($_SESSION['uinfo'], "?m") !== False) echo "<br>\n";
 	}
-	
+
 	echo "\n<table id=\"12_table\">$br<tr><td>Kurse der Q1 und Q2: </td>" . $td . "</tr>\n<tr>";
-	$n = 0;	
+	$n = 0;
 	$val = current($kurse_q);
 	$temp_old = substr($val, 0, 3);
 	while ($val = current($kurse_q)) {
@@ -637,7 +637,7 @@ if ($flagg == 0 && ($_SERVER["REQUEST_METHOD"] == "POST" || (isset($_COOKIE['k']
 			$n = 0;
 		}
 		$temp_old = substr($val, 0, 3);
-				
+
 		if ($n == $column) {
 			echo "\n</tr>\n<tr>";
 			$n = 0;
@@ -652,9 +652,9 @@ if ($flagg == 0 && ($_SERVER["REQUEST_METHOD"] == "POST" || (isset($_COOKIE['k']
 	}
 	for (; $n < $column; $n++) echo "\n\t<td></td>";
 	echo "\n</tr>\n</table>\n";
-		
+
 	echo "\n<table id=\"13_table\">$br<tr><td>Kurse der Q3 und Q4: </td>" . $td . "</tr>\n<tr>";
-	$n = 0;	
+	$n = 0;
 	$val = current($kurse_a);
 	$temp_old = substr($val, 0, 3);
 	while ($val = current($kurse_a)) {
@@ -666,7 +666,7 @@ if ($flagg == 0 && ($_SERVER["REQUEST_METHOD"] == "POST" || (isset($_COOKIE['k']
 			$n = 0;
 		}
 		$temp_old = substr($val, 0, 3);
-				
+
 		if ($n == $column) {
 			echo "\n</tr>\n<tr>";
 			$n = 0;
@@ -680,9 +680,9 @@ if ($flagg == 0 && ($_SERVER["REQUEST_METHOD"] == "POST" || (isset($_COOKIE['k']
 		$n++;
 	}
 	for (; $n < $column; $n++) echo "\n\t<td></td>";
-	
+
 	echo "\n</tr>\n</table>\n</form>\n";
-	echo "<br>\n<br>\n<div class=\"footnote\">\n$footnote</div>\n<br>";	
+	echo "<br>\n<br>\n<div class=\"footnote\">\n$footnote</div>\n<br>";
 }
 
 
@@ -697,7 +697,7 @@ if (isset($_COOKIE['uinfo'])) {									// Erzeugung von "User-Info"-Cookie
 	else echo 'm';
 	echo '";location.reload(true);</SCRIPT>';
 	$_SESSION['calls']++;
-	$uinfo = "";	
+	$uinfo = "";
 }
 if ($_SESSION['calls'] == 5) {
 	echo "Bitte erlauben Sie Cookies auf dieser Website, damit diese gescheit dargestellt werden kann.";
